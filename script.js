@@ -22,7 +22,7 @@ function showData(data) {
     output += `
       <li>
         <span><strong>${song.artist.name}</strong> - ${song.title}</span>
-        <button class="btn" data-artist="${song.artist.name}" data-songtitle="${song.title}">Get Lyrics</button>
+        <button id="getLyricsBtn" class="btn" data-artist="${song.artist.name}" data-songtitle="${song.title}">Get Lyrics</button>
       </li>
     `;
   });
@@ -64,8 +64,8 @@ async function getLyrics(artist, songTitle) {
   more.innerHTML = '';
 }
 
-// Event Listeners
-form.addEventListener('submit', e => {
+// Event Listeners - 'Search' button click
+$('header').on('submit', '#form', function(event) {
   event.preventDefault();
   const searchTerm = search.value.trim();
   if(!searchTerm) {
@@ -76,8 +76,8 @@ form.addEventListener('submit', e => {
 });
 
 // Event listeners - 'Get Lyrics' button click
-result.addEventListener('click', e => {
-  const clickedEl = e.target;
+$('body').on('click', '#getLyricsBtn', function(event) {
+  const clickedEl = event.target;
   if(clickedEl.tagName === 'BUTTON') {
     const artist = clickedEl.getAttribute('data-artist');
     const songTitle = clickedEl.getAttribute('data-songtitle');
