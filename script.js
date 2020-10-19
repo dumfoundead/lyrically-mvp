@@ -2,10 +2,10 @@
 
 const apiURL = 'https://api.lyrics.ovh';
 
-const form = document.getElementById('form');
-const search = document.getElementById('search');
-const result = document.getElementById('result');
-const more = document.getElementById('more');
+const form = $('#form');
+const search = $('#search');
+const result = $('#result');
+const more = $('#more');
 
 // Search by song or artist
 function searchSongs(term) {
@@ -27,19 +27,19 @@ function showData(data) {
     `;
   });
 
-  result.innerHTML = `
+  $('#result').html(`
     <ul class="songs">
       ${output}
     </ul>
-  `;
+  `);
 
   if(data.prev || data.next) {
-    more.innerHTML = `
+    $('#more').html(`
       ${data.prev ? `<button class="btn" onclick="getMoreSongs('${data.prev}')">Prev</button>` : ""}
       ${data.next ? `<button class="btn" onclick="getMoreSongs('${data.next}')">Next</button>` : ""}
-    `;
+    `);
   } else {
-    more.innerHTML = '';
+    $('#more').html('');
   }
 }
 
@@ -54,20 +54,20 @@ function getMoreSongs(url) {
 async function getLyrics(artist, songTitle) {
   const res = await fetch(`${apiURL}/v1/${artist}/${songTitle}`);
   const data = await res.json();
-  const lyrics = data.lyrics.replace(/(\r\n|\r|\n)/g, '<br>');
+  const lyrics = data.lyrics.replaceAll(/(\r\n|\r|\n)/g, '<br>');
 
-  result.innerHTML = `
+  $('#result').html(`
   <h2><strong>${artist}</strong> - ${songTitle}</h2>
   <span>${lyrics}</span>
-  `;
+  `);
 
-  more.innerHTML = '';
+  $('#more').html('');
 }
 
 // Event Listeners - 'Search' button click
 $('header').on('submit', '#form', function(event) {
   event.preventDefault();
-  const searchTerm = search.value.trim();
+  const searchTerm = $('#search').val().trim();
   if(!searchTerm) {
     alert('Please type in a search term')
   } else {
